@@ -1,7 +1,6 @@
 package com.sla.json;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class JsonBuilder {
 
 		String jsonData = "{"
 
-				+ "\"pown_eid\":1101," + "\"org_eid\":1101," + "\"info_obj_typeL1\":\"" + typel1 + "\","
+				+ "\"pown_eid\":1102," + "\"org_eid\":1102," + "\"info_obj_typeL1\":\"" + typel1 + "\","
 				+ "\"info_obj_typeL2\":\" " + typel2 + "\","
 
 				+ "\"info_obj_typeL3\":1,"
@@ -50,7 +49,7 @@ public class JsonBuilder {
 
 				+ "\"info_obj_action_json\":null," + "\"info_obj_notify_json\":null," + "\"info_obj_kb_json\":null,"
 
-				+ "\"details\":[" + "{" + "\"pown_eid\":1101," + "\"org_eid\":1101," + "\"obj_master_uuid_info_obj\":1,"
+				+ "\"details\":[" + "{" + "\"pown_eid\":1102," + "\"org_eid\":1102," + "\"obj_master_uuid_info_obj\":1,"
 
 				+ "\"info_obj_typeL1\":\"" + typel1 + "\"," + "\"info_obj_typeL2\":\"" + typel2 + "\","
 				+ "\"info_obj_typeL3\":\""
@@ -176,9 +175,17 @@ public class JsonBuilder {
 		descJson.put("total_computers", 1);
 
 		payload.put("info_obj_desc_json", descJson);
-		payload.put("info_obj_action_json", new HashMap<>());
-		payload.put("info_obj_notify_json", new HashMap<>());
-		payload.put("info_obj_kb_json", new HashMap<>());
+		payload.put("info_obj_action_json", null);
+		payload.put("info_obj_notify_json", null);
+		payload.put("info_obj_kb_json", null);
+		payload.put("info_obj_int1", 1);
+		payload.put("info_obj_int2", 2);
+		payload.put("info_obj_int3", 0);
+		payload.put("info_obj_int4", 0);
+		payload.put("info_obj_var1", "value1");
+		payload.put("info_obj_var2", "value2");
+		payload.put("info_obj_var3", "value3");
+		payload.put("info_obj_var4", "value4");
 
 		// ===== DETAILS ARRAY =====
 		List<Map<String, Object>> detailsList = new ArrayList<>();
@@ -203,11 +210,10 @@ public class JsonBuilder {
 		detail.put("info_parm_nameL3", utilityMethods.convertDateFormat(dto.getAdd_clause_end_date()));
 
 		// ===== VALUES (MATCH DB SCHEMA) =====
-		detail.put("info_value_int1", null);
-		detail.put("info_value_int2", null);
-		detail.put("info_value_bint3", null);
-		detail.put("info_value_bint4", null);
-
+		detail.put("info_value_int1", 1);
+		detail.put("info_value_int2", 2);
+		detail.put("info_value_bint3", 3);
+		detail.put("info_value_bint4", 0);
 		detail.put("info_value_varchar", dto.getAdd_clause_description());
 		detail.put("info_value_varchar2", null);
 
