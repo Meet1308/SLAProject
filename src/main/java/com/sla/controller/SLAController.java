@@ -56,7 +56,5 @@ public class SLAController {
 			@PathVariable String info_obj_id) {
 		return service.getSLADetailsData(pown_eid, org_eid, info_obj_id);
 	}
-	
-	String str = "abc";
-	String str2 = new String("abc");
+
 }
