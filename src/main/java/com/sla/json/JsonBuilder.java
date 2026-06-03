@@ -20,59 +20,130 @@ public class JsonBuilder {
 	@Autowired
 	private UtiliityMethods utilityMethods;
 	
-	public String buildMasterJson(ContractRequestDTO dto, String typel1, String typel2) {
+//	public String buildMasterJson(ContractRequestDTO dto, String typel1, String typel2) {
+//
+//		String jsonData = "{"
+//
+//				+ "\"pown_eid\":1102," + "\"org_eid\":1102," + "\"info_obj_typeL1\":\"" + typel1 + "\","
+//				+ "\"info_obj_typeL2\":\" " + typel2 + "\","
+//
+//				+ "\"info_obj_typeL3\":1,"
+//
+//				+ "\"info_obj_name\":\"" + dto.getAdd_contract_name() + "\"," + "\"info_obj_desc\":\""
+//				+ dto.getAdd_contract_description() + "\","
+//
+//				// NEW FIELDS
+//				+ "\"info_obj_int1\":1," + "\"info_obj_int2\":2," + "\"info_obj_int3\":3," + "\"info_obj_int4\":4,"
+//
+//				+ "\"info_obj_var1\":\"value1\"," + "\"info_obj_var2\":\"value2\"," + "\"info_obj_var3\":\"value3\","
+//
+//				+ "\"info_obj_var4\":\"value4\"," + "\"start_time\":\"" + dto.getAdd_contract_start_date() + "\","
+//
+//				+ "\"end_time\":\"" + dto.getAdd_contract_end_date() + "\"," + "\"status\":1,"
+//
+//				+ "\"info_obj_desc_json\":{" + "\"type1\":\"" + typel1 + "\"," + "\"type2\":\"" + typel2 + "\","
+//
+//				+ "\"deviceid\":\"1694312130001111\"," + "\"epoctime\":\"1773466938\"," + "\"source\":\"CONTRACT\","
+//
+//				+ "\"domain\":\"" + dto.getAdd_contract_vender_text() + "\"," + "\"total_computers\":1" + "},"
+//
+//				+ "\"info_obj_action_json\":null," + "\"info_obj_notify_json\":null," + "\"info_obj_kb_json\":null,"
+//
+//				+ "\"details\":[" + "{" + "\"pown_eid\":1102," + "\"org_eid\":1102," + "\"obj_master_uuid_info_obj\":1,"
+//
+//				+ "\"info_obj_typeL1\":\"" + typel1 + "\"," + "\"info_obj_typeL2\":\"" + typel2 + "\","
+//				
+//				+ "\"info_obj_typeL3\":\""
+//
+//				+ dto.getApplicationid() + "\"," + "\"info_obj_name\":\"" + dto.getAdd_contract_name() + "\","
+//
+//				+ "\"info_obj_desc\":\"" + dto.getAdd_contract_description() + "\","
+//
+//				+ "\"info_parm_typeL1\":\"Contract\"," + "\"info_parm_nameL1\":\"" + dto.getAdd_contract_name() + "\","
+//
+//				+ "\"info_parm_typeL2\":\"Vendor\"," + "\"info_parm_nameL2\":\"" + dto.getAdd_contract_vender_text()
+//
+//				+ "\"," + "\"info_parm_typeL3\":\"Duration\"," + "\"info_parm_nameL3\":\""
+//
+//				+ dto.getAdd_contract_start_date() + " to " + dto.getAdd_contract_end_date() + "\","
+//
+//				+ "\"info_value_int1\":null," + "\"info_value_int2\":null," + "\"info_value_varchar\":\""
+//
+//				+ dto.getAdd_contract_description() + "\"," + "\"info_value_epc\":1773466938,"
+//
+//				+ "\"info_value_status\":1" + "}" + "]" + "}";
+//
+//		return jsonData;
+//	}
+	
+	public Map<String, Object> getPayloadMap(ContractRequestDTO dto, String typel1, String typel2) {
 
-		String jsonData = "{"
+	    Map<String, Object> payload = new LinkedHashMap<>();
 
-				+ "\"pown_eid\":1102," + "\"org_eid\":1102," + "\"info_obj_typeL1\":\"" + typel1 + "\","
-				+ "\"info_obj_typeL2\":\" " + typel2 + "\","
+	    payload.put("pown_eid", 1102);
+	    payload.put("org_eid", 1102);
+	    payload.put("info_obj_typeL1", typel1);
+	    payload.put("info_obj_typeL2", typel2);
+	    payload.put("info_obj_typeL3", 1);
+	    payload.put("info_obj_name", dto.getAdd_contract_name());
+	    payload.put("info_obj_desc", dto.getAdd_contract_description());
+	    payload.put("info_obj_int1", 1);
+	    payload.put("info_obj_int2", 2);
+	    payload.put("info_obj_int3", 3);
+	    payload.put("info_obj_int4", 4);
+	    payload.put("info_obj_var1", "value1");
+	    payload.put("info_obj_var2", "value2");
+	    payload.put("info_obj_var3", "value3");
+	    payload.put("info_obj_var4", "value4");
+	    payload.put("start_time", dto.getAdd_contract_start_date());
+	    payload.put("end_time", dto.getAdd_contract_end_date());
+	    payload.put("status", 1);
 
-				+ "\"info_obj_typeL3\":1,"
+	    // info_obj_desc_json
+	    Map<String, Object> descJson = new LinkedHashMap<>();
+	    descJson.put("type1", typel1);
+	    descJson.put("type2", typel2);
+	    descJson.put("deviceid", "1694312130001111");
+	    descJson.put("epoctime", "1773466938");
+	    descJson.put("source", "CONTRACT");
+	    descJson.put("domain", dto.getAdd_contract_vender_text());
+	    descJson.put("total_computers", 1);
 
-				+ "\"info_obj_name\":\"" + dto.getAdd_contract_name() + "\"," + "\"info_obj_desc\":\""
-				+ dto.getAdd_contract_description() + "\","
+	    payload.put("info_obj_desc_json", descJson);
+	    payload.put("info_obj_action_json", null);
+	    payload.put("info_obj_notify_json", null);
+	    payload.put("info_obj_kb_json", null);
 
-				// NEW FIELDS
-				+ "\"info_obj_int1\":1," + "\"info_obj_int2\":2," + "\"info_obj_int3\":3," + "\"info_obj_int4\":4,"
+	    // details array
+	    List<Map<String, Object>> details = new ArrayList<>();
 
-				+ "\"info_obj_var1\":\"value1\"," + "\"info_obj_var2\":\"value2\"," + "\"info_obj_var3\":\"value3\","
+	    Map<String, Object> detail = new LinkedHashMap<>();
+	    detail.put("pown_eid", 1102);
+	    detail.put("org_eid", 1102);
+	    detail.put("obj_master_uuid_info_obj", 1);
+	    detail.put("info_obj_typeL1", typel1);
+	    detail.put("info_obj_typeL2", typel2);
+	    detail.put("info_obj_typeL3", dto.getApplicationid());
+	    detail.put("info_obj_name", dto.getAdd_contract_name());
+	    detail.put("info_obj_desc", dto.getAdd_contract_description());
+	    detail.put("info_parm_typeL1", "Contract");
+	    detail.put("info_parm_nameL1", dto.getAdd_contract_name());
+	    detail.put("info_parm_typeL2", "Vendor");
+	    detail.put("info_parm_nameL2", dto.getAdd_contract_vender_text());
+	    detail.put("info_parm_typeL3", "Duration");
+	    detail.put("info_parm_nameL3",
+	            dto.getAdd_contract_start_date() + " to " + dto.getAdd_contract_end_date());
+	    detail.put("info_value_int1", null);
+	    detail.put("info_value_int2", null);
+	    detail.put("info_value_varchar", dto.getAdd_contract_description());
+	    detail.put("info_value_epc", 1773466938);
+	    detail.put("info_value_status", 1);
 
-				+ "\"info_obj_var4\":\"value4\"," + "\"start_time\":\"" + dto.getAdd_contract_start_date() + "\","
+	    details.add(detail);
 
-				+ "\"end_time\":\"" + dto.getAdd_contract_end_date() + "\"," + "\"status\":1,"
+	    payload.put("details", details);
 
-				+ "\"info_obj_desc_json\":{" + "\"type1\":\"" + typel1 + "\"," + "\"type2\":\"" + typel2 + "\","
-
-				+ "\"deviceid\":\"1694312130001111\"," + "\"epoctime\":\"1773466938\"," + "\"source\":\"CONTRACT\","
-
-				+ "\"domain\":\"" + dto.getAdd_contract_vender_text() + "\"," + "\"total_computers\":1" + "},"
-
-				+ "\"info_obj_action_json\":null," + "\"info_obj_notify_json\":null," + "\"info_obj_kb_json\":null,"
-
-				+ "\"details\":[" + "{" + "\"pown_eid\":1102," + "\"org_eid\":1102," + "\"obj_master_uuid_info_obj\":1,"
-
-				+ "\"info_obj_typeL1\":\"" + typel1 + "\"," + "\"info_obj_typeL2\":\"" + typel2 + "\","
-				+ "\"info_obj_typeL3\":\""
-
-				+ dto.getApplicationid() + "\"," + "\"info_obj_name\":\"" + dto.getAdd_contract_name() + "\","
-
-				+ "\"info_obj_desc\":\"" + dto.getAdd_contract_description() + "\","
-
-				+ "\"info_parm_typeL1\":\"Contract\"," + "\"info_parm_nameL1\":\"" + dto.getAdd_contract_name() + "\","
-
-				+ "\"info_parm_typeL2\":\"Vendor\"," + "\"info_parm_nameL2\":\"" + dto.getAdd_contract_vender_text()
-
-				+ "\"," + "\"info_parm_typeL3\":\"Duration\"," + "\"info_parm_nameL3\":\""
-
-				+ dto.getAdd_contract_start_date() + " to " + dto.getAdd_contract_end_date() + "\","
-
-				+ "\"info_value_int1\":null," + "\"info_value_int2\":null," + "\"info_value_varchar\":\""
-
-				+ dto.getAdd_contract_description() + "\"," + "\"info_value_epc\":1773466938,"
-
-				+ "\"info_value_status\":1" + "}" + "]" + "}";
-
-		return jsonData;
+	    return payload;
 	}
 
 	public void setInnerData(SLARequestDTO request, List<Map<String, Object>> detailsList, String typel1,

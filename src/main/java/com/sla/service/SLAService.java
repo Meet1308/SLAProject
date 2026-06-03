@@ -8,8 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -55,8 +53,13 @@ public class SLAService {
 
 			String decodedJson = new String(Base64.getDecoder().decode(request), StandardCharsets.UTF_8);
 			ContractRequestDTO dto = mapper.readValue(decodedJson, ContractRequestDTO.class);
-			String innerJson = jsonBuilder.buildMasterJson(dto, typel1, typel2);
+//			String innerJson = jsonBuilder.buildMasterJson(dto, typel1, typel2);
+//			String payload = utilityMethods.buildEncodedPayload(innerJson);
+
+			Map<String, Object> payloadMap = jsonBuilder.getPayloadMap(dto, typel1, typel2);
+			String innerJson = mapper.writeValueAsString(payloadMap);
 			String payload = utilityMethods.buildEncodedPayload(innerJson);
+
 			RestTemplate restTemplate = restTemplateData.getRestTemplate();
 
 			HttpHeaders headers = new HttpHeaders();
@@ -309,7 +312,6 @@ public class SLAService {
 			for (JsonNode obj : dataArray) {
 
 				ObjectNode finalObj = mapper.createObjectNode();
-				// Dynamic Mapping
 				finalObj.put("applicationid", obj.path("info_obj_int1").asInt());
 				finalObj.put("documenttype", obj.path("info_obj_typeL2").asInt());
 				finalObj.put("documentid", obj.path("info_obj_id").asInt());
@@ -500,7 +502,6 @@ public class SLAService {
 				return mapper.writeValueAsString(error);
 			}
 
-			// Final SLA Array
 			ArrayNode slaArray = mapper.createArrayNode();
 
 			for (JsonNode obj : dataArray) {
@@ -509,12 +510,9 @@ public class SLAService {
 
 				slaObj.put("recordserialnumber", obj.path("info_obj_id").asInt());
 				slaObj.put("applicationid", obj.path("pown_eid").asInt());
-
 				slaObj.put("documenttype", obj.path("info_obj_typeL2").asInt());
 				slaObj.put("documentid", obj.path("info_obj_id").asInt());
 				slaObj.put("documentsubid", obj.path("info_obj_typeL3").asInt());
-
-				// 🔥 Mapping SLA values from INFO API
 				slaObj.put("docparalelevel1id", obj.path("info_obj_typeL1").asInt());
 				slaObj.put("docparalelevel1name", obj.path("info_parm_typeL1").asString());
 				slaObj.put("docparalelevel2id", obj.path("info_obj_typeL2").asInt());
@@ -524,14 +522,8 @@ public class SLAService {
 				slaObj.put("documentvalue1", obj.path("info_parm_typeL1").asString());
 				slaObj.put("documentvalue2", obj.path("info_parm_nameL2").asString());
 				slaObj.put("documentvalue3", obj.path("info_value_status").asString());
-
-				// JSON field
 				slaObj.put("docdetailjson", obj.path("info_value_varchar").asString());
-
-				// STATUS
 				slaObj.put("status", obj.path("info_value_status").asInt());
-
-				// Optional timestamps (if needed)
 				slaObj.put("startdate", obj.path("info_value_epc").asLong());
 				slaObj.put("enddate", obj.path("info_value_epc").asLong());
 
